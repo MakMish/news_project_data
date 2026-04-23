@@ -3,7 +3,7 @@ import random
 import redis
 from SRC.Utils.model import Setting
 mas=Setting()
-r=redis.Redis(host="localhost",port=6379,decode_responses=True)
+r=redis.Redis.from_url(mas.redis_url)
 async def sed(email:str):
     print("0")
     otp=random.randint(100000,999999)

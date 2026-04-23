@@ -4,4 +4,5 @@ class Setting(BaseSettings):
     db_url:str
     app_pass:str
     api_key:str
+    redis_url:str
 setting=Setting()
