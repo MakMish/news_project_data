@@ -20,6 +20,7 @@ def sed(email:str,otp:int):
             print("4")
             server.quit()
             r.set(email,otp)
+            r.expire(email,60)
             print(r.get(email))
             # r.expire(email,time=50)
         else:
