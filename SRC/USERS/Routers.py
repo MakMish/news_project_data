@@ -11,8 +11,8 @@ async def all(data:register,dba:AsyncSession=Depends(get_db)):
 
 @router.post("/login",response_model=(user))
 async def sef(data:login,dba:AsyncSession=Depends(get_db)):
-    return await gets(data,dba)
+    return await gets(data,dba,BackgroundTasks())
 
 @router.post("/{email1}/{otp}")
 async def votp(otp:int,email1:str):
-    return  ver(otp,email1)
+    return  ver(email=email1,otp=otp)

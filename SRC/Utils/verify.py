@@ -1,34 +1,38 @@
 import smtplib
-import random
 import redis
+from fastapi import HTTPException
 from SRC.Utils.model import Setting
 mas=Setting()
 r=redis.Redis.from_url(mas.redis_url)
-async def sed(email:str):
+def sed(email:str,otp:int):
     print("0")
-    otp=random.randint(100000,999999)
     message=f"hello there \n now stay updated with us \n welcome to relos news \n your otp is {otp} "
     try:
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        print("1")
-        server.starttls()  # Secure connection
-        print("2")
-        server.login("makmish.dev@gmail.com", "ybey udsw hskf xeiu")
-        print("3")
-        server.sendmail("makmish.dev@gmail.com", email, message)
-        print("4")
-        server.quit()
-        
-        # Unique key for each user
-        r.setex(f"otp:{email}", 120, str(otp))
-        print(f"OTP sent to {email}")
+        x=r.get(f"{email}")
+        if x is None:
+            server = smtplib.SMTP("smtp.gmail.com", 587)
+            print("1")
+            server.starttls()  # Secure connection
+            print("2")
+            server.login("makmish.dev@gmail.com", "qwnc jtvi kiry tekc")
+            print("3")
+            server.sendmail("makmish.dev@gmail.com", email, message)
+            print("4")
+            server.quit()
+            r.set(email,otp)
+            r.expire(email,60)
+            print(r.get(email))
+            # r.expire(email,time=50)
+        else:
+            raise HTTPException(status_code=406,detail="otp already sent")
+        # Unique key for each usey
         
     except Exception as e:
         print(f"Error: {e}")
     
 def verify2(email: str, otp: int):
-    stored_otp = r.get(f"otp:{email}")
-    
+    print(r.get(email))
+    stored_otp = r.get(email)
     if stored_otp is None:
         return 2   # expired
     
