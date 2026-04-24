@@ -3,7 +3,7 @@ import redis
 from fastapi import HTTPException
 from SRC.Utils.model import Setting
 mas=Setting()
-r=redis.Redis.from_url(mas.redis_url)
+r=redis.Redis.from_url(mas.redis_url,decode_responses=True)
 def sed(email:str,otp:int):
     print("0")
     message=f"hello there \n now stay updated with us \n welcome to relos news \n your otp is {otp} "
@@ -20,7 +20,6 @@ def sed(email:str,otp:int):
             print("4")
             server.quit()
             r.set(email,otp)
-            r.expire(email,60)
             print(r.get(email))
             # r.expire(email,time=50)
         else:
@@ -32,6 +31,8 @@ def sed(email:str,otp:int):
     
 def verify2(email: str, otp: int):
     print(r.get(email))
+    print(r.get(email))
+    print("upar")
     stored_otp = r.get(email)
     if stored_otp is None:
         return 2   # expired

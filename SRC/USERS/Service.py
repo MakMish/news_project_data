@@ -11,7 +11,7 @@ from SRC.Utils.verify import sed,verify2
 import redis
 import random
 from SRC.Utils.model import setting
-r=redis.Redis.from_url(setting.redis_url)
+r=redis.Redis.from_url(setting.redis_url,decode_responses=True)
 pwd_context=CryptContext(schemes=["bcrypt"],deprecated="auto")
 async def gets(data: login, dba: AsyncSession,bgts:BackgroundTasks):
     try:
@@ -58,6 +58,8 @@ def ver(email:str,otp:int):
                 "status": "success"
             }
         else:
+            print(v)
+            print("uoarr wala")
             raise HTTPException(status_code=408, detail="OTP invalid")
         
 
