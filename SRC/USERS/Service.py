@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException,BackgroundTasks,Depends
-from sqlalchemy import select,de
+from sqlalchemy import select
 import redis
 from SRC.Utils.dbutils import get_db
 from SRC.USERS.Schemas import User
