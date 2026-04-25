@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException,BackgroundTasks,Depends
-from sqlalchemy import select
+from sqlalchemy import select,de
 import redis
 from SRC.Utils.dbutils import get_db
 from SRC.USERS.Schemas import User
@@ -19,9 +19,6 @@ async def gets(data: login, dba: AsyncSession,bgts:BackgroundTasks):
         reslt=v.scalars().first()
         if reslt is None:
             raise HTTPException(status_code=438,detail="invalid")
-        otp = random.randint(100000, 999999)
-        sed(email=data.emai,otp=otp)
-       
         return {
         "id": reslt.id,
         "name": reslt.name,
@@ -40,9 +37,12 @@ async def gets2(data:register,dba:AsyncSession=Depends(get_db)):
         dba.add(d)
         await dba.commit()
         await dba.refresh(d)
+        otp = random.randint(100000, 999999)   
+        sed(email=data.emai,otp=otp)
         return{
             "status":"registeration successfull"
              }
+    
     except:
         raise HTTPException(status_code=429,detail="not a valid email")  
 
@@ -69,4 +69,5 @@ def ver(email:str,otp:int):
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail=f"{e}")
+    
 
