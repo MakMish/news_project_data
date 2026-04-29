@@ -26,25 +26,7 @@ async def gets(data: login, dba: AsyncSession,bgts:BackgroundTasks):
          }
     except Exception as e:
         raise HTTPException(status_code=444,detail=f"{e}")
-
-async def gets2(data:register,dba:AsyncSession=Depends(get_db)):
-    try:
-        d=User(
-        name=data.name,
-        email=data.emai,
-        hash_pass=pwd_context.hash(data.password)
-         )
-        dba.add(d)
-        await dba.commit()
-        await dba.refresh(d)
-        otp = random.randint(100000, 999999)   
-        sed(email=data.emai,otp=otp)
-        return{
-            "status":"registeration successfull"
-             }
-    
-    except:
-        raise HTTPException(status_code=429,detail="not a valid email")  
+ 
 
 def ver(email:str,otp:int):
     try:
